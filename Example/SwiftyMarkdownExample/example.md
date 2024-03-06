@@ -18,7 +18,7 @@ Customise fonts and colors easily in a Swift-like way:
 
 It supports the standard Markdown syntax, like *italics*, _underline italics_, **bold**, even _**boldItalic**_, `backticks for code`, ~~strikethrough~~, and headings.
 
-It ignores random * and correctly handles escaped \*asterisks\* and \_underlines\_ and \`backticks\`. It also supports inline Markdown [Links](http://voyagetravelapps.com/).
+It ignores random * and correctly handles escaped \*asterisks\* and \_underlines\_ and \`backticks\`. It also supports inline Markdown [Links](http://voyagetravelapps.com/ ).
 
 > It also now supports blockquotes
 > and it supports whole-line italic and bold styles so you can go completely wild with styling! Wow! Such styles! Much fun!
