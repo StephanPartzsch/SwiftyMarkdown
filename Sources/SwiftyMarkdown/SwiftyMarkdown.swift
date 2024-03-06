@@ -249,6 +249,8 @@ If that is not set, then the system default will be used.
 	public var bullet : String = "・"
 	
 	public var underlineLinks : Bool = false
+    
+    public var ignoresDynamicSize = false
 	
 	public var frontMatterAttributes : [String : String] {
 		get {
