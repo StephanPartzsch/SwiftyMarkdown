@@ -259,7 +259,8 @@ class SwiftyScanner {
 		} else {
 			var remainingTags = min(openRange.upperBound - openRange.lowerBound, closeRange.upperBound - closeRange.lowerBound) + 1
 			while remainingTags > 0 {
-				if remainingTags >= self.rule.maxTags {
+                let shouldAppendStyle = remainingTags >= self.rule.maxTags
+                if shouldAppendStyle {
 					remainingTags -= self.rule.maxTags
 					if let style = self.rule.styles[ self.rule.maxTags ] {
 						if !styles.contains(where: { $0.isEqualTo(style)}) {
@@ -267,12 +268,19 @@ class SwiftyScanner {
 						}
 					}
 				}
-				if let style = self.rule.styles[remainingTags] {
+				
+                
+                let remainingTagsStyle = self.rule.styles[remainingTags]
+                if let style = remainingTagsStyle {
 					remainingTags -= remainingTags
 					if !styles.contains(where: { $0.isEqualTo(style)}) {
 						styles.append(style)
 					}
 				}
+
+                if !shouldAppendStyle && remainingTagsStyle == nil {
+                    break
+                }
 			}
 			
 			for idx in (openRange.upperBound)...(closeRange.lowerBound) {
