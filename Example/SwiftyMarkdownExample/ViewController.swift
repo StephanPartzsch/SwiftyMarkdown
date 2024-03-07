@@ -11,7 +11,6 @@ import SwiftyMarkdown
 
 class ViewController: UIViewController {
 
-	
 	@IBOutlet weak var textField : UITextField!
 	@IBOutlet weak var textView : UITextView!
 	
@@ -39,9 +38,7 @@ class ViewController: UIViewController {
 			md.h2.fontName = "AvenirNextCondensed-Bold"
 			md.h2.color = UIColor.blue
 			md.h2.alignment = .center
-			
 			md.code.fontName = "CourierNewPSMT"
-			
 
 			if #available(iOS 13.0, *) {
 				md.strikethrough.color = .tertiaryLabel
@@ -60,4 +57,3 @@ class ViewController: UIViewController {
 		}
 	}
 }
-
