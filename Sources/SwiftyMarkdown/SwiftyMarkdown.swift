@@ -21,6 +21,7 @@ public enum CharacterStyle : CharacterStyling {
 	case none
 	case bold
 	case italic
+    case boldItalic
 	case code
 	case link
 	case image
@@ -557,20 +558,23 @@ extension SwiftyMarkdown {
         attributes[.paragraphStyle] = paragraphStyle
 		
 		
-		for token in finalTokens {
-			attributes[.font] = self.font(for: line)
-			attributes[.link] = nil
-			attributes[.strikethroughStyle] = nil
-			attributes[.foregroundColor] = self.color(for: line)
+        for token in finalTokens {
+            attributes[.font] = self.font(for: line)
+            attributes[.link] = nil
+            attributes[.strikethroughStyle] = nil
+            attributes[.foregroundColor] = self.color(for: line)
             attributes[.underlineStyle] = nil
-			guard let styles = token.characterStyles as? [CharacterStyle] else {
-				continue
-			}
-			if styles.contains(.italic) {
-				attributes[.font] = self.font(for: line, characterOverride: .italic)
-				attributes[.foregroundColor] = self.italic.color
-			}
-			if styles.contains(.bold) {
+            guard let styles = token.characterStyles as? [CharacterStyle] else {
+                continue
+            }
+            if styles.contains(.boldItalic) {
+                attributes[.font] = self.font(for: line, characterOverride: .boldItalic)
+            } else if styles.contains(.italic), styles.contains(.bold) {
+                attributes[.font] = self.font(for: line, characterOverride: .boldItalic)
+            } else if styles.contains(.italic) {
+                attributes[.font] = self.font(for: line, characterOverride: .italic)
+                attributes[.foregroundColor] = self.italic.color
+            } else if styles.contains(.bold) {
 				attributes[.font] = self.font(for: line, characterOverride: .bold)
 				attributes[.foregroundColor] = self.bold.color
 			}
