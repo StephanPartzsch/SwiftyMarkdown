@@ -1,3 +1,5 @@
+# SwiftyMarkdown 1.3.0
+
 ### Note!
 This repo contains a fork of the orginial sourcecode of SwiftyMarkdown (1.2.4) and adds a lot of the unmerged PRs regarding bugfixes and improvements. It adds support for boldItalic, proper handling of ordered lists and adjustable intervals for blocks and lists.
 
