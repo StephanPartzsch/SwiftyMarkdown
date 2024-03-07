@@ -1,3 +1,15 @@
+### Note!
+This repo contains a fork of the orginial sourcecode of SwiftyMarkdown (1.2.4) and adds a lot of the unmerged PRs regarding bugfixes and improvements. It adds support for boldItalic, proper handling of ordered lists and adjustable intervals for blocks and lists.
+
+#### PRs that are not added:
+- https://github.com/SimonFairbairn/SwiftyMarkdown/pull/141
+- https://github.com/SimonFairbairn/SwiftyMarkdown/pull/130
+- https://github.com/SimonFairbairn/SwiftyMarkdown/pull/128
+- https://github.com/SimonFairbairn/SwiftyMarkdown/pull/119
+
+---
+---
+
 # SwiftyMarkdown 1.0
 
 SwiftyMarkdown converts Markdown files and strings into `NSAttributedString`s using sensible defaults and a Swift-style syntax. It uses dynamic type to set the font size correctly with whatever font you'd like to use.
