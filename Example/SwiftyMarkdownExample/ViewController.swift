@@ -31,7 +31,7 @@ class ViewController: UIViewController {
 	}
 	
 	@IBAction func reloadText( _ sender : UIButton? ) {
-				
+        self.textView.adjustsFontForContentSizeCategory = true
 		self.textView.dataDetectorTypes = UIDataDetectorTypes.all
 		
 		if let url = Bundle.main.url(forResource: "example", withExtension: "md"), let md = SwiftyMarkdown(url: url) {
