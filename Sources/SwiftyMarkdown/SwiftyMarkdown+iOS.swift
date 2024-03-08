@@ -16,10 +16,10 @@ extension SwiftyMarkdown {
         let textStyle: UIFont.TextStyle
         var fontName: String?
         var fontSize: CGFloat?
-		
+
         var globalBold = false
         var globalItalic = false
-		
+
         let style: FontProperties
         // What type are we and is there a font name set?
         switch line.lineStyle as! MarkdownLineStyle {
@@ -63,9 +63,10 @@ extension SwiftyMarkdown {
             style = self.body
             textStyle = UIFont.TextStyle.body
         }
-		
+
         fontName = style.fontName
         fontSize = style.fontSize
+
         switch style.fontStyle {
         case .bold:
             globalBold = true
@@ -81,74 +82,61 @@ extension SwiftyMarkdown {
         if fontName == nil {
             fontName = body.fontName
         }
-		
+
         if let characterOverride = characterOverride {
             switch characterOverride {
             case .code:
                 fontName = code.fontName ?? fontName
-                fontSize = code.fontSize
+                fontSize = code.fontSize == 0.0 ? fontSize : code.fontSize
             case .link:
                 fontName = link.fontName ?? fontName
-                fontSize = link.fontSize
+                fontSize = link.fontSize == 0.0 ? fontSize : link.fontSize
             case .bold:
                 fontName = bold.fontName ?? fontName
-                fontSize = bold.fontSize
+                fontSize = bold.fontSize == 0.0 ? fontSize : bold.fontSize
                 globalBold = true
             case .italic:
                 fontName = italic.fontName ?? fontName
-                fontSize = italic.fontSize
+                fontSize = italic.fontSize == 0.0 ? fontSize : italic.fontSize
                 globalItalic = true
             case .boldItalic:
                 globalBold = true
                 globalItalic = true
             case .strikethrough:
                 fontName = strikethrough.fontName ?? fontName
-                fontSize = strikethrough.fontSize
+                fontSize = strikethrough.fontSize == 0.0 ? fontSize : strikethrough.fontSize
             default:
                 break
             }
         }
-		
-        fontSize = fontSize == 0.0 ? nil : fontSize
-        var font: UIFont
-        if let existentFontName = fontName {
-            font = UIFont.preferredFont(forTextStyle: textStyle)
-            let finalSize: CGFloat
-            if let existentFontSize = fontSize {
-                finalSize = existentFontSize
-            } else {
-                let styleDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
-                finalSize = styleDescriptor.fontAttributes[.size] as? CGFloat ?? CGFloat(14)
-            }
-			
-            if existentFontName.hasPrefix(".SFUI") {
-                let fontMetrics = UIFontMetrics(forTextStyle: textStyle)
-                if ignoresDynamicSize {
-                    font = UIFont.systemFont(ofSize: finalSize)
-                } else {
-                    font = fontMetrics.scaledFont(for: UIFont.systemFont(ofSize: finalSize))
-                }
-            } else if let customFont = UIFont(name: existentFontName, size: finalSize) {
-                let fontMetrics = UIFontMetrics(forTextStyle: textStyle)
-                if ignoresDynamicSize {
-                    font = customFont
-                } else {
-                    font = fontMetrics.scaledFont(for: customFont)
-                }
-            } else {
-                font = UIFont.preferredFont(forTextStyle: textStyle)
-            }
+
+        let finalSize: CGFloat
+        if let fontSize, fontSize > 0.0 {
+            finalSize = fontSize
         } else {
-            font = UIFont.preferredFont(forTextStyle: textStyle)
+            let styleDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
+            finalSize = styleDescriptor.fontAttributes[.size] as? CGFloat ?? CGFloat(14)
         }
-		
-//        if globalItalic, let italicDescriptor = font.fontDescriptor.withSymbolicTraits(.traitItalic) {
-//            font = UIFont(descriptor: italicDescriptor, size: fontSize ?? 0)
-//        }
-//        if globalBold, let boldDescriptor = font.fontDescriptor.withSymbolicTraits(.traitBold) {
-//            font = UIFont(descriptor: boldDescriptor, size: fontSize ?? 0)
-//        }
+
+        let fontMetrics = UIFontMetrics(forTextStyle: textStyle)
         
+        var font = UIFont.preferredFont(forTextStyle: textStyle)
+        font = ignoresDynamicSize
+            ? font
+            : fontMetrics.scaledFont(for: font)
+        
+        if let existentFontName = fontName {
+            if existentFontName.hasPrefix(".SFUI") {
+                font = ignoresDynamicSize
+                    ? UIFont.systemFont(ofSize: finalSize)
+                    : fontMetrics.scaledFont(for: UIFont.systemFont(ofSize: finalSize))
+            } else if let customFont = UIFont(name: existentFontName, size: finalSize) {
+                font = ignoresDynamicSize
+                    ? customFont
+                    : fontMetrics.scaledFont(for: customFont)
+            }
+        }
+
         var traits: UIFontDescriptor.SymbolicTraits = []
         if globalItalic {
             traits.insert(.traitItalic)
@@ -157,14 +145,15 @@ extension SwiftyMarkdown {
             traits.insert(.traitBold)
         }
         if !traits.isEmpty, let descriptor = font.fontDescriptor.withSymbolicTraits(traits) {
-            let customFont = UIFont(descriptor: descriptor, size: fontSize ?? 0)
-            let fontMetrics = UIFontMetrics(forTextStyle: textStyle)
-            font = fontMetrics.scaledFont(for: customFont)
+            let customFont = UIFont(descriptor: descriptor, size: finalSize)
+            font = ignoresDynamicSize
+                ? customFont
+                : fontMetrics.scaledFont(for: customFont)
         }
-		
+
         return font
     }
-	
+
     func color(for line: SwiftyLine) -> UIColor {
         // What type are we and is there a font name set?
         switch line.lineStyle as! MarkdownLineStyle {

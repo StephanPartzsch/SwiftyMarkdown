@@ -95,6 +95,7 @@ public enum MarkdownLineStyle : LineStyling {
 }
 #else
 @objc public protocol FontProperties {
+    var font : UIFont? { get set }
 	var fontName : String? { get set }
 	var color : UIColor { get set }
 	var fontSize : CGFloat { get set }
@@ -116,6 +117,7 @@ A class defining the styles that can be applied to the parsed Markdown. The `fon
 If that is not set, then the system default will be used.
 */
 @objc open class BasicStyles : NSObject, FontProperties {
+    public var font : UIFont?
 	public var fontName : String?
 	#if os(macOS)
 	public var color = NSColor.black
@@ -127,6 +129,7 @@ If that is not set, then the system default will be used.
 }
 
 @objc open class LineStyles : NSObject, FontProperties, LineProperties {
+    public var font : UIFont?
 	public var fontName : String?
 	#if os(macOS)
 	public var color = NSColor.black
@@ -512,7 +515,6 @@ extension SwiftyMarkdown {
 			paragraphStyle.headIndent = self.blockIndent
 			attributes[.paragraphStyle] = paragraphStyle
 		case .unorderedList, .unorderedListIndentFirstOrder, .unorderedListIndentSecondOrder, .orderedList, .orderedListIndentFirstOrder, .orderedListIndentSecondOrder:
-			
 			let interval : CGFloat = self.listInterval
 			var addition = interval
 			var indent = ""
@@ -556,7 +558,6 @@ extension SwiftyMarkdown {
         paragraphStyle.lineSpacing = lineProperties.lineSpacing
         paragraphStyle.paragraphSpacing = lineProperties.paragraphSpacing
         attributes[.paragraphStyle] = paragraphStyle
-		
 		
         for token in finalTokens {
             attributes[.font] = self.font(for: line)

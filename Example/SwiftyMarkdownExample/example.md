@@ -16,7 +16,7 @@ Customise fonts and colors easily in a Swift-like way:
     md.h2.color = UIColor.redColor()
     md.h2.alignment = .center
 
-It supports the standard Markdown syntax, like *italics*, _underline italics_, **bold**, even _**boldItalic**_, `backticks for code`, ~~strikethrough~~, and headings.
+It supports the standard Markdown syntax, like *italics*, **bold**, even _**boldItalic**_, `backticks for code`, ~~strikethrough~~, and headings.
 
 It ignores random * and correctly handles escaped \*asterisks\* and \_underlines\_ and \`backticks\`. It also supports inline Markdown [Links](http://voyagetravelapps.com/).
 
