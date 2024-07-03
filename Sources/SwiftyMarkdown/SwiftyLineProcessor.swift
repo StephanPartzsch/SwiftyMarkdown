@@ -243,7 +243,7 @@ public class SwiftyLineProcessor {
 }
 
 func processOrderListRegex(_ text: String) -> String {
-    let regex = try? NSRegularExpression(pattern: "^[0-9]+. ", options: .caseInsensitive)
+    let regex = try? NSRegularExpression(pattern: "^[0-9]+\\. ", options: .caseInsensitive)
     let range = NSMakeRange(0, text.count)
     let result = regex?.stringByReplacingMatches(in: text, options: [], range: range,
                                                  withTemplate: "1. ")
